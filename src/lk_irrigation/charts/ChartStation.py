@@ -139,7 +139,7 @@ class ChartStation:
         image_path = os.path.join(
             cls.DIR_IMAGES_STATIONS, f"{station.file_prefix}.png"
         )
-        fig.savefig(image_path, dpi=150, bbox_inches="tight")
+        fig.savefig(image_path, dpi=90, bbox_inches="tight")
         log.info(f"Wrote {image_path}")
         plt.close(fig)
         return image_path
