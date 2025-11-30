@@ -64,6 +64,23 @@ class ReadMe:
             "",
         ]
 
+    def get_markdown_for_rwld(self, rwld) -> dict:
+        ror = self.station_to_ror[rwld.station_name]
+        rising_alert = "🔺 Rising" if ror > 0.005 else ""
+        return {
+            "Measured At": TimeFormat.TIME.format(
+                Time(
+                    rwld.time_ut,
+                )
+            ),
+            "Station (River Basin)": f"{rwld.station_name}"
+            + f" ({rwld.station.river.basin.name})",
+            "Level (m)": f"{rwld.water_level_m:.2f}",
+            "Alert Level": f"{rwld.alert.emoji} {rwld.alert.name}",
+            "Rate-of-Rise (m/hr)": f"{ror:.3f}",
+            "Rising Alert": rising_alert,
+        }
+
     def get_lines_latest(self) -> list[str]:
         T_RECENT_HOURS = 1
         recent_time_ut = Time.now().ut - T_RECENT_HOURS * 3600
@@ -84,41 +101,17 @@ class ReadMe:
         if n_latest > 0:
             lines.extend(
                 Markdown.table(
-                    [
-                        {
-                            "Measured At": TimeFormat.TIME.format(
-                                Time(
-                                    rwld.time_ut,
-                                )
-                            ),
-                            "Station (River Basin)": f"{rwld.station_name}"
-                            + f" ({rwld.station.river.basin.name})",
-                            "Level (m)": f"{rwld.water_level_m:.2f}",
-                            "Alert Level": f"{rwld.alert.emoji} {rwld.alert.name}",
-                        }
-                        for rwld in latest
-                    ]
+                    [self.get_markdown_for_rwld(rwld) for rwld in latest]
                 )
             )
         return lines
 
     def get_lines_latest_by_station(self) -> list[str]:
-
         lines = ["## Latest by Station", ""]
         lines.extend(
             Markdown.table(
                 [
-                    {
-                        "Measured At": TimeFormat.TIME.format(
-                            Time(
-                                rwld.time_ut,
-                            )
-                        ),
-                        "Station (River)": f"{rwld.station_name}"
-                        + f" ({rwld.station.river.name})",
-                        "Level (m)": f"{rwld.water_level_m:.2f}",
-                        "Alert Level": f"{rwld.alert.emoji} {rwld.alert.name}",
-                    }
+                    self.get_markdown_for_rwld(rwld)
                     for rwld in self.latest_sorted
                 ]
             )
