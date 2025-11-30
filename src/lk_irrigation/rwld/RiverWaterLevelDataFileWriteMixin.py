@@ -18,7 +18,7 @@ class RiverWaterLevelDataFileWriteMixin:
 
     @classmethod
     def write_all(cls):
-        d_list = [asdict(q) for q in cls.list_all()]
+        d_list = [asdict(q) for q in cls.list_all_from_files()]
         d_list.reverse()
         for n in [100, 1000, None]:
             d_list_custom = d_list[:n] if n else d_list
@@ -35,3 +35,9 @@ class RiverWaterLevelDataFileWriteMixin:
             json_file = JSONFile(json_file_path)
             json_file.write(d_list_custom)
             log.info(f"Wrote {json_file}")
+
+        cls.list_all.cache_clear()
+        cls.station_to_list.cache_clear()
+        cls.station_to_latest.cache_clear()
+        cls.station_to_ror.cache_clear()
+        log.debug("Cleared caches for list_all and related methods.")

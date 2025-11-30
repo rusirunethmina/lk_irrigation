@@ -30,9 +30,7 @@ class RiverWaterLevelDataFileReadOnlyMixin:
         return JSONFile(self.json_path)
 
     @classmethod
-    @cache
-    def list_all(cls) -> list:
-        raw_d_list = JSONFile(cls.ALL_PATH).read()
+    def __list_from_raw_d_list__(cls, raw_d_list):
         d_list = [cls(**d) for d in raw_d_list]
         d_list.sort(
             key=lambda d: (
@@ -42,7 +40,28 @@ class RiverWaterLevelDataFileReadOnlyMixin:
                 d.station.name,
             )
         )
-        log.debug(f"Loaded {len(d_list)} RWLDs.")
+        return d_list
+
+    @classmethod
+    def list_all_from_files(cls) -> list:
+        raw_d_list = []
+        for dir_path, _, file_names in os.walk(cls.DIR_DATA_RWLD):
+            for file_name in file_names:
+                if not file_name.endswith(".json"):
+                    continue
+                json_path = os.path.join(
+                    dir_path,
+                    file_name,
+                )
+                raw_d = JSONFile(json_path).read()
+                raw_d_list.append(raw_d)
+        return cls.__list_from_raw_d_list__(raw_d_list)
+
+    @classmethod
+    @cache
+    def list_all(cls) -> list:
+        raw_d_list = JSONFile(cls.ALL_PATH).read()
+        d_list = cls.__list_from_raw_d_list__(raw_d_list)
         return d_list
 
     @classmethod
