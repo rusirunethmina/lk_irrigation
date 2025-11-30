@@ -62,8 +62,8 @@ class ReadMe:
                                 rwld.time_ut,
                             )
                         ),
-                        "Station (River)": f"{rwld.station_name}"
-                        + f" ({rwld.station.river.name})",
+                        "Station (River Basin)": f"{rwld.station_name}"
+                        + f" ({rwld.station.river.basin.name})",
                         "Level (m)": f"{rwld.water_level_m:.2f}",
                         "Alert Level": f"{rwld.alert.emoji} {rwld.alert.name}",
                     }
