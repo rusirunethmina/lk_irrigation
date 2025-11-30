@@ -1,0 +1,240 @@
+import os
+from pathlib import Path
+
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+from gig import Ent, EntType
+from matplotlib.lines import Line2D
+from utils import Log, Time, TimeFormat
+
+from lk_irrigation.core.Alert import Alert
+from lk_irrigation.core.Location import Location
+from lk_irrigation.core.River import River
+from lk_irrigation.core.Station import Station
+from lk_irrigation.rwld.RiverWaterLevelData import RiverWaterLevelData
+
+log = Log("RiverWaterLevelDataTableMapMixin")
+
+
+class ChartMap:
+
+    LOCATION_MARKER_SHAPE = "s"
+    LOCATION_MARKER_SIZE = 3
+    STATION_MARKER_SHAPE = "o"
+    STATION_MARKER_SIZE = LOCATION_MARKER_SIZE * 2
+    RIVER_WIDTH = LOCATION_MARKER_SIZE // 1.5
+    MIN_DISTANCE_FOR_LABEL = 0.004
+
+    def __init__(self):
+        self.station_to_latest = RiverWaterLevelData.station_to_latest()
+
+    def __draw_map__(self, ax):
+        district_ents = Ent.list_from_type(EntType.DISTRICT)
+        for ent in district_ents:
+            geo = ent.geo()
+            geo.plot(
+                ax=ax,
+                color=(0.95, 1.0, 1.0),
+                edgecolor=(0.75, 0.75, 0.75),
+                linewidth=0.5,
+                alpha=1.0,
+            )
+
+    def __draw_river_segment__(self, ax, loc1, loc2, color):
+        y1, x1 = loc1.lat_lng
+        y2, x2 = loc2.lat_lng
+
+        dx = x2 - x1
+        dy = y2 - y1
+
+        dmin = min(abs(dx), abs(dy))
+        xmid1 = x1 + dmin * dx / abs(dx) / 2
+        ymid1 = y1 + dmin * dy / abs(dy) / 2
+        xmid2 = x2 - dmin * dx / abs(dx) / 2
+        ymid2 = y2 - dmin * dy / abs(dy) / 2
+
+        ax.plot(
+            [x1, xmid1, xmid2, x2],
+            [y1, ymid1, ymid2, y2],
+            color=color,
+            linewidth=self.RIVER_WIDTH,
+            alpha=0.75,
+        )
+
+    def __draw_river__(self, ax, river, station_to_alert):
+        locations = [
+            Station.from_name_safe(name) or Location.from_name(name)
+            for name in river.location_names
+        ]
+        n_locations = len(locations)
+
+        for i in range(n_locations - 1):
+            loc1 = locations[i]
+            loc2 = locations[i + 1]
+
+            alert1 = station_to_alert.get(loc1.name, Alert.NO_DATA)
+            alert2 = station_to_alert.get(loc2.name, Alert.NO_DATA)
+            alert_max = max(alert1, alert2)
+
+            self.__draw_river_segment__(ax, loc1, loc2, alert_max.color)
+
+            if i == n_locations - 2:
+                y1, x1 = loc1.lat_lng
+                y2, x2 = loc2.lat_lng
+                ax.text(
+                    (x1 + x2) / 2,
+                    (y1 + y2) / 2,
+                    river.name,
+                    horizontalalignment="center",
+                    verticalalignment="center",
+                    fontsize=self.RIVER_WIDTH * 1.5,
+                    color="black",
+                )
+
+    def __draw_rivers__(self, ax):
+        rivers = River.list_all()
+
+        station_to_alert = {}
+        for station_name, rwld in self.station_to_latest.items():
+            station_to_alert[station_name] = rwld.alert
+
+        for river in rivers:
+            self.__draw_river__(ax, river, station_to_alert)
+
+    def __draw_locations__(self, ax):
+        locations = Location.list_all()
+        for location in locations:
+            lat, lng = location.lat_lng
+            ax.plot(
+                lng,
+                lat,
+                marker=self.LOCATION_MARKER_SHAPE,
+                markersize=self.LOCATION_MARKER_SIZE,
+                color="grey",
+            )
+            ax.text(
+                lng + self.LOCATION_MARKER_SIZE / 200,
+                lat,
+                location.name,
+                horizontalalignment="left",
+                verticalalignment="center",
+                fontsize=self.LOCATION_MARKER_SIZE,
+                color="black",
+            )
+
+    def __draw_station__(self, ax, rwld):
+        station = rwld.station
+        lat, lng = station.lat_lng
+        alert = rwld.alert
+        color = alert.color
+
+        # draw white-filled marker with colored edge (no connecting line)
+        ax.plot(
+            lng,
+            lat,
+            marker=self.STATION_MARKER_SHAPE,
+            markersize=self.STATION_MARKER_SIZE,
+            markerfacecolor="white",
+            markeredgecolor=color,
+            markeredgewidth=self.STATION_MARKER_SIZE // 3,
+            linestyle="",
+            zorder=5,
+        )
+        ax.text(
+            lng + self.STATION_MARKER_SIZE / 200,
+            lat,
+            station.name,
+            horizontalalignment="left",
+            verticalalignment="center",
+            fontsize=self.STATION_MARKER_SIZE,
+            color="black",
+        )
+
+    def __draw_stations__(self, ax):
+        for rwld in self.station_to_latest.values():
+            self.__draw_station__(ax, rwld)
+
+    def __draw_legend__(self, ax):
+        legend_handles = []
+        for alert in Alert.list_all():
+            label = alert.label
+            color = alert.color
+            if alert.level == 0:
+                markersize = self.LOCATION_MARKER_SIZE
+                marker_style = self.LOCATION_MARKER_SHAPE
+            else:
+                markersize = self.STATION_MARKER_SIZE
+                marker_style = self.STATION_MARKER_SHAPE
+            handle = Line2D(
+                [0],
+                [0],
+                marker=marker_style,
+                color="w",
+                markerfacecolor="white",
+                markeredgecolor=color,
+                markeredgewidth=markersize // 3,
+                markersize=markersize,
+                label=label,
+            )
+            legend_handles.append(handle)
+
+        ax.legend(handles=legend_handles, loc="upper right", fontsize=8)
+
+    def __draw_titles_and_footnotes__(self, fig):
+        max_time_ut = max(
+            rwld.time_ut for rwld in self.station_to_latest.values()
+        )
+        for y, text, fontsize in [
+            (0.85, "Sri Lanka - Flood Map", 16),
+            (
+                0.825,
+                f"As of {TimeFormat.TIME.format(Time(max_time_ut))}",
+                12,
+            ),
+            (0.8, "Data source: http://dmc.gov.lk", 8),
+        ]:
+            fig.text(
+                0.3,
+                y,
+                text,
+                fontsize=fontsize,
+                color="black",
+                horizontalalignment="left",
+                verticalalignment="center",
+            )
+
+    def __set_font__(self):
+        base = Path(__file__).resolve().parents[2]
+        font_path = base / "fonts" / "Ubuntu-Regular.ttf"
+        if font_path.exists():
+            try:
+                mpl.font_manager.fontManager.addfont(str(font_path))
+                fp = mpl.font_manager.FontProperties(fname=str(font_path))
+                font_name = fp.get_name()
+                plt.rcParams["font.family"] = font_name
+            except Exception:
+                plt.rcParams["font.family"] = "DejaVu Sans"
+        else:
+            plt.rcParams["font.family"] = "DejaVu Sans"
+
+    def draw_map(self) -> str:
+        fig, ax = plt.subplots()
+
+        self.__set_font__()
+
+        self.__draw_map__(ax)
+        self.__draw_rivers__(ax)
+        self.__draw_locations__(ax)
+        self.__draw_stations__(ax)
+        self.__draw_legend__(ax)
+        self.__draw_titles_and_footnotes__(fig)
+
+        ax.set_axis_off()
+        for spine in ax.spines.values():
+            spine.set_visible(False)
+
+        image_path = os.path.join("images", "map.png")
+        fig.set_size_inches(12, 12, forward=True)
+        fig.savefig(image_path, dpi=300, bbox_inches="tight")
+        log.info(f"Wrote {image_path}")
+        return image_path
