@@ -1,5 +1,15 @@
 [
   {
+    "station_name": "Siyambalanduwa",
+    "time_ut": 1764543296,
+    "water_level_m": 1.24
+  },
+  {
+    "station_name": "Norwood",
+    "time_ut": 1764543224,
+    "water_level_m": 1.43
+  },
+  {
     "station_name": "Kuda Oya",
     "time_ut": 1764542386,
     "water_level_m": 1.94
@@ -488,15 +498,5 @@
     "station_name": "Panadugama",
     "time_ut": 1764531220,
     "water_level_m": 3.54
-  },
-  {
-    "station_name": "Katharagama",
-    "time_ut": 1764531195,
-    "water_level_m": 0.95
-  },
-  {
-    "station_name": "Horowpothana",
-    "time_ut": 1764531179,
-    "water_level_m": 7.41
   }
 ]
