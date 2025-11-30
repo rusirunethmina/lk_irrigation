@@ -57,8 +57,22 @@ class RiverWaterLevelDataFileReadOnlyMixin:
         return idx
 
     @classmethod
+    @cache
     def station_to_latest(cls):
         station_to_latest = {}
         for station_name, rwld_list in cls.station_to_list().items():
-            station_to_latest[station_name] = rwld_list[0]
+            station_to_latest[station_name] = rwld_list[-1]
         return station_to_latest
+
+    @classmethod
+    @cache
+    def station_to_ror(cls):
+        idx = {}
+        for station_name, rwld_list in cls.station_to_list().items():
+            latest = rwld_list[-1]
+            second_latest = rwld_list[-2]
+            dlevel = latest.water_level_m - second_latest.water_level_m
+            dt = latest.time_ut - second_latest.time_ut
+            ror = 3600 * dlevel / dt
+            idx[station_name] = ror
+        return idx
