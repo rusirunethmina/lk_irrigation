@@ -1,5 +1,10 @@
 [
   {
+    "station_name": "Kithulgala",
+    "time_ut": 1764511159,
+    "water_level_m": 2.72
+  },
+  {
     "station_name": "Giriulla",
     "time_ut": 1764510393,
     "water_level_m": 3.95
@@ -493,10 +498,5 @@
     "station_name": "Hanwella",
     "time_ut": 1764499030,
     "water_level_m": 10.6
-  },
-  {
-    "station_name": "Urawa",
-    "time_ut": 1764499004,
-    "water_level_m": 0.84
   }
 ]
