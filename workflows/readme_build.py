@@ -1,5 +1,4 @@
-from lk_irrigation import ReadMe, RiverWaterLevelData
+from lk_irrigation import ReadMe
 
 if __name__ == "__main__":
-    RiverWaterLevelData.write_all()
     ReadMe().build()
