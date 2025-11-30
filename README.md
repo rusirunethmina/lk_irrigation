@@ -11,7 +11,7 @@ Realtime Data about *River Water Levels* in Sri Lanka, from the [Irrigation Dept
 
 ## Latest measurements
 
-*There were **66** measurements in the last **1 hour**.*
+*There were **65** measurements in the last **1 hour**.*
 
 | Measured At | Station (River Basin) | Level (m) | Alert Level |
 | --- | --- | ---: | --- |
@@ -80,7 +80,6 @@ Realtime Data about *River Water Levels* in Sri Lanka, from the [Irrigation Dept
 | 2025-11-30 15:00:27 | Horowpothana (Yan Oya) | 7.55 | 🟠 Minor Flood |
 | 2025-11-30 14:59:31 | Nakkala (Kumbukkan Oya) | 1.83 | 🟢 Normal |
 | 2025-11-30 14:56:34 | Ellagawa (Kalu Ganga) | 11.94 | 🟠 Minor Flood |
-| 2025-11-30 14:39:41 | Kithulgala (Kelani Ganga) | 2.29 | 🟢 Normal |
 
 ## Latest by Station
 
