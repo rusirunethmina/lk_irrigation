@@ -1,10 +1,10 @@
-name: backpopulate
+name: back_populate
 
 on:
   workflow_dispatch:
 
 jobs:
-  backpopulate:
+  back_populate:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,13 +26,13 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip install build
 
-      - name: "⚙️ Run backpopulate"
+      - name: "⚙️ Run back_populate"
         run: |
           export PYTHONPATH="$PYTHONPATH:./src"
 
           git config --global user.email "${{ secrets.GIT_USER_EMAIL }}"
           git config --global user.name "${{ secrets.GIT_USER_NAME }}"
-          python workflows/backpopulate.py
+          python workflows/back_populate.py
 
       - name: "⬆️ Push"
         run: |
@@ -41,6 +41,6 @@ jobs:
             echo "No changes to commit."
             exit 0
           fi
-          git commit -m "🤖 [backpopulate.yml] $(date '+%Y-%m-%d-%H%M')"
+          git commit -m "🤖 [back_populate.yml] $(date '+%Y-%m-%d-%H%M')"
           git pull origin main --rebase
           git push origin main
