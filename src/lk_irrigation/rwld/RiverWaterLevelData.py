@@ -159,8 +159,9 @@ class RiverWaterLevelData(HasTimeMixin):
             d_list_for_page = cls.__load_data_list_from_remote_page__(
                 station_name, days_offset, page_offset, page_size
             )
-            if d_list_for_page is not None:
-                d_list += d_list_for_page
+            if d_list_for_page is None or len(d_list_for_page) == 0:
+                break
+            d_list += d_list_for_page
 
         log.debug(f"Fetched {len(d_list)} for {station_name}")
         return d_list
