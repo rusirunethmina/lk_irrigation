@@ -26,6 +26,13 @@
     ]
   },
   {
+    "name": "Gal Oya",
+    "basin_name": "Gal Oya",
+    "location_names": [
+      "Ampara"
+    ]
+  },
+  {
     "name": "Gin Ganga",
     "basin_name": "Gin Ganga",
     "location_names": [
@@ -99,7 +106,7 @@
     "name": "Kuda Ganga",
     "basin_name": "Kalu Ganga",
     "location_names": [
-      "Kalawellawa",
+      "Kalawellawa (Millakanda)",
       "Putupaula"
     ]
   },
@@ -132,7 +139,7 @@
     "basin_name": "Kalu Ganga",
     "location_names": [
       "Magura",
-      "Kalawellawa"
+      "Kalawellawa (Millakanda)"
     ]
   },
   {
