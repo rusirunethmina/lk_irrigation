@@ -1,4 +1,11 @@
 station_name	time_ut	water_level_m
+Urawa	1764538366	0.75
+Pitabeddara	1764538347	1.1
+Nawalapitiya	1764538330	1.96
+Nakkala	1764538327	1.74
+Siyambalanduwa	1764538326	1.25
+Nawalapitiya	1764538307	1.97
+Nawalapitiya	1764538283	1.98
 Putupaula	1764535292	4.29
 Kithulgala	1764535166	2.39
 Baddegama	1764535133	2.24
@@ -992,10 +999,3 @@ Urawa	1764420026	0.96
 Holombuwa	1764420004	2.57
 Thalgahagoda	1764419862	1.6
 Rathnapura	1764419824	8.3
-Yaka Wewa	1764419776	2.11
-Nakkala	1764419753	2.05
-Thanamalwila	1764419753	2.09
-Hanwella	1764419731	10.87
-Panadugama	1764419729	4.37
-Dunamale	1764419723	6.36
-Kithulgala	1764419716	3.35
