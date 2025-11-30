@@ -15,7 +15,7 @@ Realtime Data about *River Water Levels* in Sri Lanka, from the [Irrigation Dept
 
 ## Latest measurements
 
-*There were **31** measurements in the last **1 hour**.*
+*There were **27** measurements in the last **1 hour**.*
 
 | Measured At | Station (River Basin) | Level (m) | Alert Level | Rate-of-Rise (m/hr) | Rising Alert |
 | --- | --- | ---: | --- | ---: | --- |
@@ -46,10 +46,6 @@ Realtime Data about *River Water Levels* in Sri Lanka, from the [Irrigation Dept
 | 2025-11-30 18:01:45 | Putupaula (Kalu Ganga) | 4.28 | 🟠 Minor Flood | 0.010 | 🔺 Rising |
 | 2025-11-30 18:01:36 | Glencourse (Kelani Ganga) | 16.25 | 🟡 Alert | -0.230 |  |
 | 2025-11-30 18:01:31 | Siyambalanduwa (Heda Oya) | 1.36 | 🟢 Normal | -0.010 |  |
-| 2025-11-30 18:01:20 | Yaka Wewa (Ma Oya) | 1.56 | 🟢 Normal | 0.084 | 🔺 Rising |
-| 2025-11-30 18:00:45 | Horowpothana (Yan Oya) | 7.51 | 🟠 Minor Flood | -0.021 |  |
-| 2025-11-30 18:00:34 | Thanthirimale (Malwathu Oya) | 10.86 | 🔴 Major Flood | -0.041 |  |
-| 2025-11-30 18:00:16 | Nawalapitiya (Mahaweli Ganga) | 2.05 | 🟢 Normal | -0.021 |  |
 
 ## Latest by Station
 
