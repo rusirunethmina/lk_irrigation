@@ -23,19 +23,19 @@ class ReadMe:
 
     def __init__(self):
         self.rwld_list = RiverWaterLevelData.list_all()
-        self.station_rwld_list = RiverWaterLevelData.station_to_list()
+        self.station_to_rwld_list = RiverWaterLevelData.station_to_list()
 
     def get_lines_header(self) -> list[str]:
         max_time_ut = max([rwld.time_ut for rwld in self.rwld_list])
-        time_updated_for_badge = Format.badge(max_time_ut)
+        time_str = TimeFormat.TIME.format(Time(max_time_ut))
+        time_updated_for_badge = Format.badge(time_str)
         return [
             "# lk_irrigation 🇱🇰",
             "",
-            "![LastUpdated](https://img.shields.io/badge"
-            + f"/last_updated-{time_updated_for_badge}-green)",
-            "",
             "![Status: Live]"
             + "(https://img.shields.io/badge/status-live-brightgreen)",
+            "![LastUpdated](https://img.shields.io/badge"
+            + f"/last_updated-{time_updated_for_badge}-green)",
             "",
         ]
 
@@ -48,16 +48,27 @@ class ReadMe:
             + " Division.",
             "",
             f"- [Complete Dataset]({self.URL_DATA})"
-            + f" with **{len(self.rwld_list):,} measurements**",
+            + f" with **{len(self.rwld_list):,} measurements**"
+            + f" from **{len(self.station_to_rwld_list):,}** stations.",
             f"- [Scrape and load logic]({self.URL_LOADER})",
             f"- [Original Data source]({self.URL_ARCGIS_DASHBOARD})",
             "",
         ]
 
     def get_lines_latest(self) -> list[str]:
-        N_LATEST = 20
-        latest = self.rwld_list[:N_LATEST]
-        lines = [f"## Latest {N_LATEST} Measurements", ""]
+        T_RECENT_HOURS = 1
+        recent_time_ut = Time.now().ut - T_RECENT_HOURS * 3600
+        latest = [
+            rwld for rwld in self.rwld_list if rwld.time_ut > recent_time_ut
+        ]
+        n_latest = len(latest)
+        lines = [
+            "## Latest measurements",
+            "",
+            f"*There were **{n_latest:,}** measurements"
+            + f" in the last **{T_RECENT_HOURS} hour**.*",
+            "",
+        ]
         lines.extend(
             Markdown.table(
                 [
@@ -80,7 +91,7 @@ class ReadMe:
 
     def get_lines_latest_by_station(self) -> list[str]:
         d_list = []
-        for rwld_list in self.station_rwld_list.values():
+        for rwld_list in self.station_to_rwld_list.values():
             latest = rwld_list[0]
             d_list.append(latest)
 
