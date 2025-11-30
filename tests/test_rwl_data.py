@@ -5,7 +5,6 @@ from lk_irrigation import RiverWaterLevelData
 
 class TestCase(unittest.TestCase):
 
-    @unittest.skip("Requires network access")
     def test_load_station_from_remote(self):
         d_list = RiverWaterLevelData.load_station_from_remote(
             "Nagalagam Street", 7, 50, 25
