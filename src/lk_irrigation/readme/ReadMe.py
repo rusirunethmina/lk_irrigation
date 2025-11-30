@@ -1,5 +1,6 @@
-from utils import File, Log
+from utils import File, Log, Time, TimeFormat
 
+from lk_irrigation.base import Markdown
 from lk_irrigation.rwld.RiverWaterLevelData import RiverWaterLevelData
 
 log = Log("ReadMe")
@@ -48,6 +49,28 @@ class ReadMe:
             "",
         ]
 
+    def get_lines_latest(self) -> list[str]:
+        latest = self.rwld_list[:20]
+        lines = ["## Latest Data", ""]
+        lines.extend(
+            Markdown.table(
+                [
+                    {
+                        "Measured At": TimeFormat.TIME.format(
+                            Time(
+                                rwld.time_ut,
+                            )
+                        ),
+                        "Station": rwld.station_name,
+                        "Level (m)": f"{rwld.water_level_m:.2f}",
+                    }
+                    for rwld in latest
+                ]
+            )
+        )
+
+        return lines
+
     def get_lines_footer(self) -> list[str]:
         return [
             "![Maintainer]"
@@ -63,6 +86,7 @@ class ReadMe:
         return (
             self.get_lines_header()
             + self.get_lines_introduction()
+            + self.get_lines_latest()
             + self.get_lines_footer()
         )
 
