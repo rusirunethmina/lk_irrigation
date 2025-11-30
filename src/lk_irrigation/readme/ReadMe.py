@@ -1,4 +1,4 @@
-from utils import File, Log, Time, TimeFormat
+from utils import File, Format, Log, Time, TimeFormat
 
 from lk_irrigation.base import Markdown
 from lk_irrigation.rwld.RiverWaterLevelData import RiverWaterLevelData
@@ -26,8 +26,13 @@ class ReadMe:
         self.station_rwld_list = RiverWaterLevelData.station_to_list()
 
     def get_lines_header(self) -> list[str]:
+        max_time_ut = max([rwld.time_ut for rwld in self.rwld_list])
+        time_updated_for_badge = Format.badge(max_time_ut)
         return [
             "# lk_irrigation 🇱🇰",
+            "",
+            "![LastUpdated](https://img.shields.io/badge"
+            + f"/last_updated-{time_updated_for_badge}-green)",
             "",
             "![Status: Live]"
             + "(https://img.shields.io/badge/status-live-brightgreen)",
