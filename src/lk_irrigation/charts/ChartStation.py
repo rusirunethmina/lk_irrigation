@@ -70,7 +70,7 @@ class ChartStation:
                 ]
             ),
             xy=(latest_time, latest_level),
-            xytext=(20, 20),
+            xytext=(30, 30),
             textcoords="offset points",
             bbox=dict(
                 boxstyle="round,pad=0.5", fc=rwld.alert.color, alpha=0.7
