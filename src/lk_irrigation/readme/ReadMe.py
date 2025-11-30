@@ -56,6 +56,7 @@ class ReadMe:
             Markdown.table(
                 [
                     {
+                        "Alert Level": f"{rwld.alert.emoji} {rwld.alert.name}",
                         "Measured At": TimeFormat.TIME.format(
                             Time(
                                 rwld.time_ut,

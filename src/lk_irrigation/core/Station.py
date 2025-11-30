@@ -9,7 +9,7 @@ from lk_irrigation.core.River import River
 @dataclass
 class Station(Location, AbstractTable):
     river_name: str
-    alert_level: float
+    alert_level_m: float
     minor_flood_level_m: float
     major_flood_level_m: float
     district_id: str
