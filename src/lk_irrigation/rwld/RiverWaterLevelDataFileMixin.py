@@ -1,6 +1,6 @@
 import os
 from dataclasses import asdict
-from functools import cached_property
+from functools import cache, cached_property
 
 from utils import JSONFile, Log
 
@@ -34,3 +34,36 @@ class RiverWaterLevelDataFileMixin:
         os.makedirs(self.dir_path, exist_ok=True)
         self.json_file.write(asdict(self))
         log.info(f"Wrote {self.json_file}")
+
+    @classmethod
+    def __gen_all_json_files__(cls) -> list[JSONFile]:
+        for root, _, files in os.walk(cls.DIR_DATA_RWLD):
+            for file in files:
+                if file.endswith(".json"):
+                    yield JSONFile(os.path.join(root, file))
+
+    @classmethod
+    def __gen_all_ds__(cls):
+        for json_file in cls.__gen_all_json_files__():
+            data = json_file.read()
+            yield data
+
+    @classmethod
+    def __gen_all__(cls):
+        for data in cls.__gen_all_ds__():
+            yield cls(**data)
+
+    @classmethod
+    @cache
+    def list_all(cls) -> list:
+        d_list = list(cls.__gen_all__())
+        d_list.sort(
+            key=lambda d: (
+                -d.time_ut,
+                d.station.river.basin.name,
+                d.station.river.name,
+                d.station.name,
+            )
+        )
+        log.debug(f"Loaded {len(d_list)} RWLDs.")
+        return d_list
