@@ -49,6 +49,8 @@ class RiverWaterLevelData(HasTimeMixin):
         return JSONFile(self.json_path)
 
     def write(self):
+        if self.json_file.exists:
+            return
         os.makedirs(self.dir_path, exist_ok=True)
         self.json_file.write(asdict(self))
         log.info(f"Wrote {self.json_file}")
