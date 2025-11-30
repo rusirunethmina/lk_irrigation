@@ -27,7 +27,8 @@ class ReadMe:
         return [
             "# lk_irrigation 🇱🇰",
             "",
-            "![Status: Live](https://img.shields.io/badge/status-live-brightgreen)",
+            "![Status: Live]"
+            + "(https://img.shields.io/badge/status-live-brightgreen)",
             "",
         ]
 
