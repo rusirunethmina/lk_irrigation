@@ -2,7 +2,7 @@ import os
 from dataclasses import asdict
 from functools import cache, cached_property
 
-from utils import JSONFile, Log
+from utils import JSONFile, Log, TSVFile
 
 log = Log("RiverWaterLevelDataFileMixin")
 
@@ -78,3 +78,13 @@ class RiverWaterLevelDataFileMixin:
                 idx[d.station_name] = []
             idx[d.station_name].append(d)
         return idx
+
+    @classmethod
+    def write_all(cls):
+        d_list = [asdict(q) for q in cls.list_all()]
+        for n in [100, 1000, None]:
+            file_name = f"latest-{n}" if n else "all"
+            tsv_file_path = os.path.join("data", f"{file_name}.tsv")
+            tsv_file = TSVFile(tsv_file_path)
+            tsv_file.write(d_list[:n])
+            log.info(f"Wrote {tsv_file}")
