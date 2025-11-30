@@ -13,8 +13,13 @@ log = Log("RiverWaterLevelData")
 
 @dataclass
 class RiverWaterLevelData(HasTimeMixin):
-    # Short for River Water Level Data
+
     DIR_DATA_RWLD = os.path.join("data", "rwlds")
+    REMOTE_URL = (
+        "https://services3.arcgis.com"
+        + "/J7ZFXmR8rSmQ3FGf/arcgis/rest/services"
+        + "/gauges_2_view/FeatureServer/0/query"
+    )
 
     station_name: str
     time_ut: int
@@ -88,19 +93,20 @@ class RiverWaterLevelData(HasTimeMixin):
         return rwld
 
     @classmethod
-    def __get_data_list_from_remote__(cls, station_name: str):
-        assert Station.from_name(station_name)
-        url = (
-            "https://services3.arcgis.com"
-            + "/J7ZFXmR8rSmQ3FGf/arcgis/rest/services"
-            + "/gauges_2_view/FeatureServer/0/query"
-        )
+    def __load_data_list_from_remote_page__(
+        cls,
+        station_name: str,
+        days_offset: int,
+        page_offset: int,
+        page_size: int,
+    ):
+
         params = {
             "f": "json",
-            "resultOffset": 0,
-            "resultRecordCount": 200,
+            "resultOffset": page_offset,
+            "resultRecordCount": page_size,
             "where": "((CreationDate BETWEEN CURRENT_TIMESTAMP"
-            + " - 7 AND CURRENT_TIMESTAMP))"
+            + f" - {days_offset} AND CURRENT_TIMESTAMP))"
             + f" AND (gauge='{station_name}')",
             "orderByFields": "CreationDate DESC",
             "outFields": "*",
@@ -108,16 +114,54 @@ class RiverWaterLevelData(HasTimeMixin):
             "returnGeometry": "false",
             "spatialRel": "esriSpatialRelIntersects",
         }
-        r = requests.get(url, params=params, timeout=10)
-        d_list = [q["attributes"] for q in r.json().get("features", [])]
-        log.debug(f"Fetched {len(d_list)} for {station_name} from {url}")
+        try:
+            r = requests.get(cls.REMOTE_URL, params=params, timeout=10)
+            d_list = [q["attributes"] for q in r.json().get("features", [])]
+            log.debug(f"Fetched {len(d_list)} for {station_name}")
+            return d_list
+        except Exception as e:
+            log.error(f"Error fetching data for {station_name}: {e}")
+            return None
+
+    @classmethod
+    def __load_data_list_from_remote__(
+        cls,
+        station_name: str,
+        days_offset: int,
+        total_pages: int,
+        page_size: int,
+    ):
+        assert (
+            total_pages % page_size == 0
+        ), "total_pages must be a multiple of page_size"
+        assert Station.from_name(
+            station_name
+        ), f"Station not found: {station_name}"
+
+        d_list = []
+        for page_offset in range(0, total_pages + page_size, page_size):
+            d_list_for_page = cls.__load_data_list_from_remote_page__(
+                station_name, days_offset, page_offset, page_size
+            )
+            if d_list_for_page is not None:
+                d_list += d_list_for_page
+
+        log.debug(f"Fetched {len(d_list)} for {station_name}")
         return d_list
 
     @classmethod
-    def load_station_from_remote(cls, station_name):
+    def load_station_from_remote(
+        cls,
+        station_name: str,
+        days_offset: int,
+        total_pages: int,
+        page_size: int,
+    ):
         rwld_list = [
             cls.from_remote_data_dict(d)
-            for d in cls.__get_data_list_from_remote__(station_name)
+            for d in cls.__load_data_list_from_remote__(
+                station_name, days_offset, total_pages, page_size
+            )
         ]
         for rwld in rwld_list:
             rwld.write()
@@ -128,9 +172,16 @@ class RiverWaterLevelData(HasTimeMixin):
         return rwld_list
 
     @classmethod
-    def load_all_from_remote(cls):
+    def load_all_from_remote(
+        cls,
+        days_offset: int,
+        total_pages: int,
+        page_size: int,
+    ):
         rwld_list = []
         for station in Station.list_all():
-            rwld_list += cls.load_station_from_remote(station.name)
+            rwld_list += cls.load_station_from_remote(
+                station.name, days_offset, total_pages, page_size
+            )
         log.info(f"Loaded total {len(rwld_list)} RWLD entries from remote")
         return rwld_list
