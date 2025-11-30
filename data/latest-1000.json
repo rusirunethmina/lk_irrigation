@@ -1,5 +1,10 @@
 [
   {
+    "station_name": "Giriulla",
+    "time_ut": 1764528600,
+    "water_level_m": 3.7
+  },
+  {
     "station_name": "Thanthirimale",
     "time_ut": 1764527965,
     "water_level_m": 10.64
@@ -4993,10 +4998,5 @@
     "station_name": "Dunamale",
     "time_ut": 1764412610,
     "water_level_m": 6.5
-  },
-  {
-    "station_name": "Putupaula",
-    "time_ut": 1764412593,
-    "water_level_m": 3.89
   }
 ]

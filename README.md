@@ -1,11 +1,11 @@
 # lk_irrigation 🇱🇰
 
 ![Status: Live](https://img.shields.io/badge/status-live-brightgreen)
-![LastUpdated](https://img.shields.io/badge/last_updated-2025--12--01_00:09:25-green)
+![LastUpdated](https://img.shields.io/badge/last_updated-2025--12--01_00:20:00-green)
 
 Realtime Data about *River Water Levels* in Sri Lanka, from the [Irrigation Deptartment](https://www.irrigation.gov.lk)'s [Hydrology and Disaster Management](https://www.irrigation.gov.lk/web/index.php?option=com_content&view=article&id=27&Itemid=128&lang=en) Division.
 
-- [Complete Dataset](data/rwlds) with **6,262 measurements** from **39** stations.
+- [Complete Dataset](data/rwlds) with **6,263 measurements** from **39** stations.
 - [Scrape and load logic](src/lk_irrigation/rwld/RiverWaterLevelDataLoadMixin.py)
 - [Original Data source](https://www.arcgis.com/apps/dashboards/2cffe83c9ff5497d97375498bdf3ff38)
 
@@ -15,10 +15,11 @@ Realtime Data about *River Water Levels* in Sri Lanka, from the [Irrigation Dept
 
 ## Latest measurements
 
-*There were **32** measurements in the last **1 hour**.*
+*There were **31** measurements in the last **1 hour**.*
 
 | Measured At | Station (River Basin) | Level (m) | Alert Level | Rate-of-Rise (m/hr) | Rising Alert |
 | --- | --- | ---: | --- | ---: | --- |
+| 2025-12-01 00:20:00 | Giriulla (Maha Oya) | 3.70 | 🟢 Normal | -0.043 |  |
 | 2025-12-01 00:09:25 | Thanthirimale (Malwathu Oya) | 10.64 | 🔴 Major Flood | -0.033 |  |
 | 2025-12-01 00:08:26 | Wellawaya (Kirindi Oya) | 1.23 | 🟢 Normal | 0.000 |  |
 | 2025-12-01 00:08:22 | Baddegama (Gin Ganga) | 2.28 | 🟢 Normal | -0.020 |  |
@@ -49,8 +50,6 @@ Realtime Data about *River Water Levels* in Sri Lanka, from the [Irrigation Dept
 | 2025-12-01 00:00:44 | Thalgahagoda (Nilwala Ganga) | 1.04 | 🟢 Normal | 0.000 |  |
 | 2025-12-01 00:00:11 | Horowpothana (Yan Oya) | 7.43 | 🟡 Alert | -0.041 |  |
 | 2025-12-01 00:00:09 | Moraketiya (Walawe Ganga) | 1.41 | 🟢 Normal | -0.030 |  |
-| 2025-11-30 23:14:47 | Kalawellawa (Millakanda) (Kalu Ganga) | 7.60 | 🟠 Minor Flood | -0.026 |  |
-| 2025-11-30 23:10:56 | Giriulla (Maha Oya) | 3.75 | 🟢 Normal | -0.039 |  |
 
 ## Latest by Station
 
@@ -92,7 +91,7 @@ Realtime Data about *River Water Levels* in Sri Lanka, from the [Irrigation Dept
 | 2025-11-30 14:03:57 | Padiyathalawa (Maduru Oya) | 1.17 | 🟢 Normal | -0.021 |  |
 | 2025-12-01 00:03:00 | Panadugama (Nilwala Ganga) | 3.55 | 🟢 Normal | -0.022 |  |
 | 2025-12-01 00:00:09 | Moraketiya (Walawe Ganga) | 1.41 | 🟢 Normal | -0.030 |  |
-| 2025-11-30 23:10:56 | Giriulla (Maha Oya) | 3.75 | 🟢 Normal | -0.039 |  |
+| 2025-12-01 00:20:00 | Giriulla (Maha Oya) | 3.70 | 🟢 Normal | -0.043 |  |
 | 2025-12-01 00:07:01 | Holombuwa (Kelani Ganga) | 1.51 | 🟢 Normal | -0.058 |  |
 | 2025-11-30 23:01:04 | Magura (Kalu Ganga) | 2.47 | 🟢 Normal | -0.090 |  |
 | 2025-12-01 00:05:19 | Kithulgala (Kelani Ganga) | 2.35 | 🟢 Normal | -0.138 |  |
