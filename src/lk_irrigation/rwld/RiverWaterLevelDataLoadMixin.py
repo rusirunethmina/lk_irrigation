@@ -22,9 +22,9 @@ class RiverWaterLevelDataLoadMixin:
         for [expected, actual, label] in [
             [self.station.river.basin.name, d["basin"], "basin"],
             [
-                self.station.alert_level,
+                self.station.alert_level_m,
                 d["alertpull"] * converstion_factor,
-                "alert_level",
+                "alert_level_m",
             ],
             [
                 self.station.minor_flood_level_m,
