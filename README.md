@@ -1,14 +1,17 @@
 # lk_irrigation 🇱🇰
 
 ![Status: Live](https://img.shields.io/badge/status-live-brightgreen)
+![LastUpdated](https://img.shields.io/badge/last_updated-2025--11--30_14:39:41-green)
 
 Realtime Data about *River Water Levels* in Sri Lanka, from the [Irrigation Deptartment](https://www.irrigation.gov.lk)'s [Hydrology and Disaster Management](https://www.irrigation.gov.lk/web/index.php?option=com_content&view=article&id=27&Itemid=128&lang=en) Division.
 
-- [Complete Dataset](data/rwlds) with **5,760 measurements**
+- [Complete Dataset](data/rwlds) with **5,760 measurements** from **38** stations.
 - [Scrape and load logic](src/lk_irrigation/rwld/RiverWaterLevelDataLoadMixin.py)
 - [Original Data source](https://www.arcgis.com/apps/dashboards/2cffe83c9ff5497d97375498bdf3ff38)
 
-## Latest 20 Measurements
+## Latest measurements
+
+*There were **29** measurements in the last **1 hour**.*
 
 | Measured At | Station (River Basin) | Level (m) | Alert Level |
 | --- | --- | ---: | --- |
@@ -32,6 +35,15 @@ Realtime Data about *River Water Levels* in Sri Lanka, from the [Irrigation Dept
 | 2025-11-30 14:02:42 | Magura (Kalu Ganga) | 3.30 | 🟢 Normal |
 | 2025-11-30 14:02:39 | Pitabeddara (Nilwala Ganga) | 1.22 | 🟢 Normal |
 | 2025-11-30 14:02:19 | Dunamale (Aththanagalu Oya) | 5.09 | 🟠 Minor Flood |
+| 2025-11-30 14:02:17 | Norwood (Kelani Ganga) | 1.42 | 🟢 Normal |
+| 2025-11-30 14:02:06 | Urawa (Nilwala Ganga) | 0.85 | 🟢 Normal |
+| 2025-11-30 14:01:58 | Wellawaya (Kirindi Oya) | 1.25 | 🟢 Normal |
+| 2025-11-30 14:01:53 | Baddegama (Gin Ganga) | 2.52 | 🟢 Normal |
+| 2025-11-30 14:01:35 | Thawalama (Gin Ganga) | 2.09 | 🟢 Normal |
+| 2025-11-30 14:01:29 | Ellagawa (Kalu Ganga) | 11.90 | 🟠 Minor Flood |
+| 2025-11-30 14:01:24 | Kuda Oya (Kirindi Oya) | 2.04 | 🟢 Normal |
+| 2025-11-30 14:00:48 | Thanamalwila (Kirindi Oya) | 1.82 | 🟢 Normal |
+| 2025-11-30 13:59:56 | Nakkala (Kumbukkan Oya) | 1.84 | 🟢 Normal |
 
 ## Latest by Station
 
