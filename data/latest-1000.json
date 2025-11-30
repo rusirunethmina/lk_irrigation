@@ -1,5 +1,25 @@
 [
   {
+    "station_name": "Dunamale",
+    "time_ut": 1764539522,
+    "water_level_m": 4.74
+  },
+  {
+    "station_name": "Putupaula",
+    "time_ut": 1764539475,
+    "water_level_m": 4.29
+  },
+  {
+    "station_name": "Norwood",
+    "time_ut": 1764539445,
+    "water_level_m": 1.33
+  },
+  {
+    "station_name": "Deraniyagala",
+    "time_ut": 1764539355,
+    "water_level_m": 1.43
+  },
+  {
     "station_name": "Thawalama",
     "time_ut": 1764539023,
     "water_level_m": 2.09
@@ -4978,25 +4998,5 @@
     "station_name": "Hanwella",
     "time_ut": 1764423297,
     "water_level_m": 10.89
-  },
-  {
-    "station_name": "Thawalama",
-    "time_ut": 1764423292,
-    "water_level_m": 2.44
-  },
-  {
-    "station_name": "Norwood",
-    "time_ut": 1764423264,
-    "water_level_m": 1.63
-  },
-  {
-    "station_name": "Thanamalwila",
-    "time_ut": 1764423260,
-    "water_level_m": 2.07
-  },
-  {
-    "station_name": "Kalawellawa (Millakanda)",
-    "time_ut": 1764423210,
-    "water_level_m": 8.14
   }
 ]
