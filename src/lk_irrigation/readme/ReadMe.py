@@ -26,6 +26,8 @@ class ReadMe:
     def __init__(self):
         self.rwld_list = RiverWaterLevelData.list_all()
         self.station_to_rwld_list = RiverWaterLevelData.station_to_list()
+        self.station_to_latest = RiverWaterLevelData.station_to_latest()
+        self.station_to_ror = RiverWaterLevelData.station_to_ror()
 
     def get_lines_header(self) -> list[str]:
         max_time_ut = max([rwld.time_ut for rwld in self.rwld_list])
@@ -60,11 +62,14 @@ class ReadMe:
     def get_lines_latest(self) -> list[str]:
         T_RECENT_HOURS = 1
         recent_time_ut = Time.now().ut - T_RECENT_HOURS * 3600
+        last_time_ut = self.rwld_list[-1].time_ut
+
         latest = [
-            rwld for rwld in self.rwld_list if rwld.time_ut > recent_time_ut
+            rwld for rwld in self.rwld_list if (rwld.time_ut > recent_time_ut)
         ]
         latest.reverse()
         n_latest = len(latest)
+
         lines = [
             "## Latest measurements",
             "",
@@ -72,31 +77,33 @@ class ReadMe:
             + f" in the last **{T_RECENT_HOURS} hour**.*",
             "",
         ]
-        lines.extend(
-            Markdown.table(
-                [
-                    {
-                        "Measured At": TimeFormat.TIME.format(
-                            Time(
-                                rwld.time_ut,
-                            )
-                        ),
-                        "Station (River Basin)": f"{rwld.station_name}"
-                        + f" ({rwld.station.river.basin.name})",
-                        "Level (m)": f"{rwld.water_level_m:.2f}",
-                        "Alert Level": f"{rwld.alert.emoji} {rwld.alert.name}",
-                    }
-                    for rwld in latest
-                ]
+        if n_latest > 0:
+            lines.extend(
+                Markdown.table(
+                    [
+                        {
+                            "Measured At": TimeFormat.TIME.format(
+                                Time(
+                                    rwld.time_ut,
+                                )
+                            ),
+                            "Station (River Basin)": f"{rwld.station_name}"
+                            + f" ({rwld.station.river.basin.name})",
+                            "Level (m)": f"{rwld.water_level_m:.2f}",
+                            "Alert Level": f"{rwld.alert.emoji} {rwld.alert.name}",
+                        }
+                        for rwld in latest
+                    ]
+                )
             )
-        )
         return lines
 
     def get_lines_latest_by_station(self) -> list[str]:
-        d_list = []
-        for rwld_list in self.station_to_rwld_list.values():
-            latest = rwld_list[-1]
-            d_list.append(latest)
+        latest_sorted = sorted(
+            self.station_to_latest.values(),
+            key=lambda d: (d.alert.level, self.station_to_ror[d.station_name]),
+            reverse=True,
+        )
 
         lines = ["## Latest by Station", ""]
         lines.extend(
@@ -113,7 +120,7 @@ class ReadMe:
                         "Level (m)": f"{rwld.water_level_m:.2f}",
                         "Alert Level": f"{rwld.alert.emoji} {rwld.alert.name}",
                     }
-                    for rwld in d_list
+                    for rwld in latest_sorted
                 ]
             )
         )
