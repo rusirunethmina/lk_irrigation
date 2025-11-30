@@ -1,6 +1,7 @@
-from lk_irrigation import RiverWaterLevelData
+from lk_irrigation import ReadMe, RiverWaterLevelData
 
 if __name__ == "__main__":
     RiverWaterLevelData.load_all_from_remote(
         days_offset=28, total_pages=1_000, page_size=100
     )
+    ReadMe().build()
