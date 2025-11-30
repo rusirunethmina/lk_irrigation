@@ -28,6 +28,11 @@ class ReadMe:
         self.station_to_rwld_list = RiverWaterLevelData.station_to_list()
         self.station_to_latest = RiverWaterLevelData.station_to_latest()
         self.station_to_ror = RiverWaterLevelData.station_to_ror()
+        self.latest_sorted = sorted(
+            self.station_to_latest.values(),
+            key=lambda d: (d.alert.level, self.station_to_ror[d.station_name]),
+            reverse=True,
+        )
 
     def get_lines_header(self) -> list[str]:
         max_time_ut = max([rwld.time_ut for rwld in self.rwld_list])
@@ -62,7 +67,6 @@ class ReadMe:
     def get_lines_latest(self) -> list[str]:
         T_RECENT_HOURS = 1
         recent_time_ut = Time.now().ut - T_RECENT_HOURS * 3600
-        last_time_ut = self.rwld_list[-1].time_ut
 
         latest = [
             rwld for rwld in self.rwld_list if (rwld.time_ut > recent_time_ut)
@@ -99,11 +103,6 @@ class ReadMe:
         return lines
 
     def get_lines_latest_by_station(self) -> list[str]:
-        latest_sorted = sorted(
-            self.station_to_latest.values(),
-            key=lambda d: (d.alert.level, self.station_to_ror[d.station_name]),
-            reverse=True,
-        )
 
         lines = ["## Latest by Station", ""]
         lines.extend(
@@ -120,7 +119,7 @@ class ReadMe:
                         "Level (m)": f"{rwld.water_level_m:.2f}",
                         "Alert Level": f"{rwld.alert.emoji} {rwld.alert.name}",
                     }
-                    for rwld in latest_sorted
+                    for rwld in self.latest_sorted
                 ]
             )
         )
@@ -149,10 +148,12 @@ class ReadMe:
     def get_lines_charts_for_stations(self) -> list[str]:
         station_to_image = ChartStation.draw_all_stations()
         lines = ["## River Water Level Charts by Station", ""]
-        for station_name, image_path in station_to_image.items():
+        for rwld in self.latest_sorted:
+            station_name = rwld.station_name
+            image_path = station_to_image[station_name]
             lines.extend(
                 [
-                    f"### {station_name}",
+                    f"### {station_name} ({rwld.station.river.basin.name})",
                     "",
                     f"![{station_name}]({image_path})",
                     "",
