@@ -1,5 +1,20 @@
 [
   {
+    "station_name": "Panadugama",
+    "time_ut": 1764585846,
+    "water_level_m": 3.31
+  },
+  {
+    "station_name": "Pitabeddara",
+    "time_ut": 1764585787,
+    "water_level_m": 1.0
+  },
+  {
+    "station_name": "Thalgahagoda",
+    "time_ut": 1764585622,
+    "water_level_m": 0.83
+  },
+  {
     "station_name": "Magura",
     "time_ut": 1764585571,
     "water_level_m": 2.19
@@ -4983,20 +4998,5 @@
     "station_name": "Dunamale",
     "time_ut": 1764473789,
     "water_level_m": 5.34
-  },
-  {
-    "station_name": "Holombuwa",
-    "time_ut": 1764473769,
-    "water_level_m": 1.99
-  },
-  {
-    "station_name": "Yaka Wewa",
-    "time_ut": 1764473751,
-    "water_level_m": 1.72
-  },
-  {
-    "station_name": "Thanamalwila",
-    "time_ut": 1764473749,
-    "water_level_m": 1.9
   }
 ]

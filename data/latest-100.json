@@ -1,5 +1,20 @@
 [
   {
+    "station_name": "Panadugama",
+    "time_ut": 1764585846,
+    "water_level_m": 3.31
+  },
+  {
+    "station_name": "Pitabeddara",
+    "time_ut": 1764585787,
+    "water_level_m": 1.0
+  },
+  {
+    "station_name": "Thalgahagoda",
+    "time_ut": 1764585622,
+    "water_level_m": 0.83
+  },
+  {
     "station_name": "Magura",
     "time_ut": 1764585571,
     "water_level_m": 2.19
@@ -483,20 +498,5 @@
     "station_name": "Siyambalanduwa",
     "time_ut": 1764577898,
     "water_level_m": 1.18
-  },
-  {
-    "station_name": "Thanthirimale",
-    "time_ut": 1764577849,
-    "water_level_m": 9.54
-  },
-  {
-    "station_name": "Nakkala",
-    "time_ut": 1764577810,
-    "water_level_m": 1.64
-  },
-  {
-    "station_name": "Panadugama",
-    "time_ut": 1764575443,
-    "water_level_m": 3.33
   }
 ]
