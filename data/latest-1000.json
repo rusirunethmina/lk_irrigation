@@ -1,5 +1,10 @@
 [
   {
+    "station_name": "Kithulgala",
+    "time_ut": 1764567842,
+    "water_level_m": 2.25
+  },
+  {
     "station_name": "Ellagawa",
     "time_ut": 1764567534,
     "water_level_m": 11.13
@@ -4993,10 +4998,5 @@
     "station_name": "Thanamalwila",
     "time_ut": 1764452280,
     "water_level_m": 2.02
-  },
-  {
-    "station_name": "Putupaula",
-    "time_ut": 1764452245,
-    "water_level_m": 4.07
   }
 ]
